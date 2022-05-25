@@ -1,0 +1,7 @@
+.MuiTextField-root {
+    color: red;
+}
+.CourtCosts-amount .MuiOutlinedInput-root {
+    height: 30px;
+    width: 70px;
+}

@@ -9,7 +9,7 @@ import '../CourtCosts.css'
 import useInput from "../hooks/useInput";
 import CourtCostsCard from "./CourtCostsCard";
 import {useDispatch, useSelector} from "react-redux";
-import {setResult, setSum, setSumVat, setSumWithoutVat, setSumWithVat} from "../redux/courtCosts";
+import {setResult, setSumWithoutVat, setSumWithVat} from "../redux/courtCosts";
 import CourtCostsSummaryCard from "./CourtCostsSummaryCard";
 
 export default function CourtCosts() {
@@ -17,9 +17,10 @@ export default function CourtCosts() {
     const dispatch = useDispatch()
 
 
-    const [amount, handleAmountChange] = useInput();
+    const [sum, setSum] = useState('');
+
+    // const [amount, handleAmountChange] = useInput();
     const [discount, handleDiscount] = useInput();
-    const [total, setTotal] = useState(0);
 
     const [values, setValues] = useState({
         legalHelp: '',
@@ -30,7 +31,10 @@ export default function CourtCosts() {
         oneNineZero: '',
         sixNineFive: ''
     })
-
+    const handleSumChange = (e) => {
+        setSum(e.target.value)
+        calculate(sum)
+    }
     const calculateTotal = (newValues) => {
         const {oneThreeSix, oneFiveZero, oneSixFour, oneSevenEight, oneNineZero, sixNineFive, legalHelp} = newValues
         const newTotal =
@@ -79,7 +83,6 @@ export default function CourtCosts() {
             inputName: 'sixNineFive'
         }
     ]
-
     const calculate = (input) => {
         const ceiling = (number, significance) => {
             return Math.ceil(number / significance) * significance;
@@ -124,13 +127,11 @@ export default function CourtCosts() {
     return (
         <div className={'w-[60%] flex flex-col mx-auto'}>
             <FormControl sx={{m: 1, width: '33%'}}>
-                <TextField id="standard-basic" label="Zadaj sumu" variant="standard" value={amount} type={"number"}
-                           onChange={handleAmountChange}/>
+                <TextField id="standard-basic" label="Zadaj sumu" variant="standard" value={sum} type={"number"}
+                           onChange={handleSumChange}/>
             </FormControl>
             <FormControl sx={{mt: 5, ml: 1, width: '15%'}}>
                 <TextField
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
                     value={discount}
                     label="Zadajte zlavu"
                     select
@@ -168,8 +169,8 @@ export default function CourtCosts() {
             <div>
                 <CourtCostsSummaryCard/>
             </div>
-            <Button sx={{width: '20%', mt: '2rem'}} variant={"contained"}
-                    onClick={() => calculate(amount)}>Calculate</Button>
+            {/*<Button sx={{width: '20%', mt: '2rem'}} variant={"contained"}*/}
+            {/*        onClick={() => calculate(amount)}>Calculate</Button>*/}
         </div>
     )
 }
